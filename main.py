@@ -1,9 +1,10 @@
 from selenium import webdriver
-from selenium.webdriver import ActionChains
+from selenium.webdriver.common.by import By
 import time
 
 # 로그인 페이지 : https://nxlogin.nexon.com/common/login.aspx?redirect=https%3A%2F%2Fbaramy.nexon.com%2F2022%2Fevent_1005-registration
 loginPage = "https://nxlogin.nexon.com/common/login.aspx?redirect=https%3A%2F%2Fbaramy.nexon.com%2F2022%2Fevent_1005-registration"
+driverPath = "../chromedriver.exe"
 
 driver = []
 
@@ -38,24 +39,25 @@ def nexon_login(id, pw, idx):
     txtID = "txtNexonID"
     txtPW = "txtPWD"
 
-    loginID = driver[idx].find_element_by_id(txtID)
-    loginPW = driver[idx].find_element_by_id(txtPW)
-    loginBT = driver[idx].find_element_by_class_name("button01")
+    loginID = driver[idx].find_element(By.ID, txtID)
+    loginPW = driver[idx].find_element(By.ID, txtPW)
+    loginBT = driver[idx].find_element(By.CLASS_NAME, "button01")
 
     loginID.send_keys(id)
     loginPW.send_keys(pw)
-    loginBT.send_keys("\ue007")
+    #loginBT.send_keys("\ue007")
+    loginBT.click()
 
 # 게임시작 버튼 /html/body/div[3]/header/aside/button
 def game_start(idx):
-    driver[idx].find_element_by_xpath("/html/body/div[3]/header/aside/button").send_keys("\ue007")
+    driver[idx].find_element(By.XPATH, "/html/body/div[3]/header/aside/button").send_keys("\ue007")
 
 def main():
     account = read_ID_PW()
 
     # 드라이버
     for i in range(account["id"].__len__()):
-        driver.append(webdriver.Chrome("../chromedriver.exe"))
+        driver.append(webdriver.Chrome(driverPath))
         driver[i].implicitly_wait(2)
         driver[i].get(loginPage)
 
@@ -66,4 +68,5 @@ def main():
         time.sleep(3)
         game_start(i)
 
-main()
+if __name__ == "__main__":
+    main()
