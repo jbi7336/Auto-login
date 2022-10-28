@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
+import json
 
 # 로그인 페이지 : https://nxlogin.nexon.com/common/login.aspx?redirect=https%3A%2F%2Fbaramy.nexon.com%2F2022%2Fevent_1005-registration
 loginPage = "https://nxlogin.nexon.com/common/login.aspx?redirect=https%3A%2F%2Fbaramy.nexon.com%2F2022%2Fevent_1005-registration"
@@ -10,29 +11,43 @@ driver = []
 
 # 계정 파싱
 def read_ID_PW():
-    account = { "id" : [], "pw" : [] , "google" : 0}
-    f = open("../id.txt", "r")
+    account = {}
 
-    # 분류
-    while True:
-        line = f.readline()
+    try:
+        with open("../id.json", "r") as f:
+            account = json.load(f)
+    except:
+        print("No file")
 
-        if not line:
-            break
-        
-        str_temp = line.strip().split(':')
-        if str_temp[0] != "google":
-            key, value = str_temp
-            account[key].append(value)
-        else: # Google
-            account["google"] = account["google"] + 1
-    
     return account
 
+# 페이스북 로그인
+def facebook_login(id, pw, idx):
+    pass
+
+# 애플 로그인
+def apple_login(id, pw, idx):
+    pass
+
+# 네이버 로그인
+def naver_login(id, pw, idx):
+    pass
+
 # 구글 로그인
-# //*[@id="contents"]/div/div[2]/button[2]
-def google_login():
-    driver.find_element_by_xpath('//*[@id="contents"]/div/div[2]/button[2]').send_keys("\ue007")
+def google_login(id, pw, idx):
+    txtID = '//*[@id="identifierId"]'
+    txtPW = '//*[@id="password"]/div[1]/div/div[1]/input'
+    idBT = '//*[@id="identifierNext"]/div/button'
+    pwBT = '//*[@id="passwordNext"]/div/button'
+
+    loginID = driver[idx].find_element(By.XPATH, txtID)
+    loginID.send_keys(id)
+    driver[idx].find_element(By.XPATH, idBT).click()
+
+
+    loginPW = driver[idx].find_element(By.XPATH, txtPW)
+    loginPW.send_keys(pw)
+    driver[idx].find_element(By.XPATH, pwBT).click()
 
 # 넥슨 로그인
 def nexon_login(id, pw, idx):
@@ -45,7 +60,6 @@ def nexon_login(id, pw, idx):
 
     loginID.send_keys(id)
     loginPW.send_keys(pw)
-    #loginBT.send_keys("\ue007")
     loginBT.click()
 
 # 게임시작 버튼 /html/body/div[3]/header/aside/button
@@ -56,7 +70,7 @@ def main():
     account = read_ID_PW()
 
     # 드라이버
-    for i in range(account["id"].__len__()):
+    for i in range(account['account'].__len__()):
         driver.append(webdriver.Chrome(driverPath))
         driver[i].implicitly_wait(2)
         driver[i].get(loginPage)
