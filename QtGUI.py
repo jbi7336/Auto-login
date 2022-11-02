@@ -6,6 +6,8 @@ from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox
 
 from MainWindow import Ui_baramWindow
 from jsonControl import read_json, input_account, make_json
+from selenium.webdriver.chrome.service import Service
+from subprocess import CREATE_NO_WINDOW
 
 class listModel(QtCore.QAbstractListModel):
     def __init__(self, df=None):
@@ -126,7 +128,8 @@ class Window(QMainWindow, Ui_baramWindow):
             try:
                 wd.web_login(self.driver[row], data)
             except:
-                self.driver[row] = wd.uc.Chrome()
+                service = Service()
+                self.driver[row] = wd.uc.Chrome(use_subprocess=True, service_creationflags=CREATE_NO_WINDOW)
                 self.driver[row].implicitly_wait(3)
                 wd.web_login(self.driver[row], data)
             self.status_change(row, True)
@@ -139,7 +142,7 @@ class Window(QMainWindow, Ui_baramWindow):
             try:
                 wd.web_login(self.driver[row], data)
             except:
-                self.driver[row] = wd.uc.Chrome()
+                self.driver[row] = wd.uc.Chrome(use_subprocess=True, service_creationflags=CREATE_NO_WINDOW)
                 self.driver[row].implicitly_wait(3)
                 wd.web_login(self.driver[row], data)
             self.status_change(row, True)
