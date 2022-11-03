@@ -1,6 +1,6 @@
 # Auto-login
 
-## Description
+## 프로그램 설명
 바람의나라:연 로그인 및 게임실행 관리를 위해 만든 Python 프로그램
 
 ![image](https://user-images.githubusercontent.com/35110792/199516897-3bb33530-a83f-4254-a35d-c01b10bf1c6f.png)
