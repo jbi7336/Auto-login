@@ -1,47 +1,13 @@
 import webdriver as wd
 
-from PyQt6 import uic, QtWidgets, QtCore, QtGui
-from PyQt6.QtCore import Qt
+from PyQt6 import uic, QtWidgets
 from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox
 
 from MainWindow import Ui_baramWindow
 from jsonControl import read_json, input_account, make_json
 from selenium.webdriver.chrome.service import Service
+from model import listModel
 from subprocess import CREATE_NO_WINDOW
-
-class listModel(QtCore.QAbstractListModel):
-    def __init__(self, df=None):
-        super().__init__()
-        self.df = df or {}
-
-        # 읽은 데이터 상태 표시 이미지
-        self.tick = QtGui.QImage('./image/tick.png')
-        self.redcross = QtGui.QImage('./image/redcross.png')
-
-    # ListView 에 보여질 데이터 선별
-    # Override
-    def data(self, index, role):
-        if role == Qt.ItemDataRole.DisplayRole:
-            # Json
-            _, json = self.df['account'][index.row()]
-            platform = json['PLATFORM']
-            id = json['ID']
-            pw = json['PW']
-            job = json['JOB']
-
-            strTemp = f'{job}\t{platform}\t{id}\t'
-            return strTemp
-
-        if role == Qt.ItemDataRole.DecorationRole:
-            status, _ = self.df['account'][index.row()]
-            if status:
-                return self.tick
-            else:
-                return self.redcross
-
-    # Override
-    def rowCount(self, index):
-        return self.df['account'].__len__()
 
 # 메인 프레임
 class Window(QMainWindow, Ui_baramWindow):
@@ -184,9 +150,19 @@ class Window(QMainWindow, Ui_baramWindow):
 
     # GUI 가 종료시 이벤트를 받아 모든 계정데이터를 False 처리
     def closeEvent(self, event):
-        for i in range(self.model.rowCount(None)):
-            _, temp = self.model.df['account'][i]
-            self.model.df['account'][i] = (False, temp)
+        reqMsg = QMessageBox.question(self, "종료", "종료하시겠습니까?")
 
-        self.save()
-        event.accept()
+        if reqMsg.name == "Yes":
+            for i in range(self.model.rowCount(None)):
+                _, temp = self.model.df['account'][i]
+                self.model.df['account'][i] = (False, temp)
+
+                try:
+                    self.driver[i].quit()
+                except:
+                    pass
+
+            self.save()
+            event.accept()
+        else:
+            event.ignore()
