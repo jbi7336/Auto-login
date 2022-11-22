@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'maintest.ui'
+# Form implementation generated from reading ui file '.\maintest.ui'
 #
 # Created by: PyQt6 UI code generator 6.0.2
 #
@@ -12,7 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_baramWindow(object):
     def setupUi(self, baramWindow):
         baramWindow.setObjectName("baramWindow")
-        baramWindow.resize(521, 280)
+        baramWindow.resize(532, 271)
         self.baramWidget = QtWidgets.QWidget(baramWindow)
         self.baramWidget.setObjectName("baramWidget")
         self.allExecuteBtn = QtWidgets.QPushButton(self.baramWidget)
@@ -70,9 +70,12 @@ class Ui_baramWindow(object):
         self.pwText = QtWidgets.QLineEdit(self.baramWidget)
         self.pwText.setGeometry(QtCore.QRect(40, 40, 91, 22))
         self.pwText.setObjectName("pwText")
+        self.loadBtn = QtWidgets.QPushButton(self.baramWidget)
+        self.loadBtn.setGeometry(QtCore.QRect(40, 160, 91, 24))
+        self.loadBtn.setObjectName("loadBtn")
         baramWindow.setCentralWidget(self.baramWidget)
         self.menubar = QtWidgets.QMenuBar(baramWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 521, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 532, 22))
         self.menubar.setObjectName("menubar")
         baramWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(baramWindow)
@@ -105,3 +108,4 @@ class Ui_baramWindow(object):
         self.jobType.setItemText(4, _translate("baramWindow", "궁사"))
         self.jobType.setItemText(5, _translate("baramWindow", "격투가"))
         self.jobType.setItemText(6, _translate("baramWindow", "무사"))
+        self.loadBtn.setText(_translate("baramWindow", "Load"))

@@ -20,6 +20,7 @@ def web_login(driver, data):
         bt = driver.find_element(By.CLASS_NAME, "bt" + platform)
         bt.click()
     except ex.NoSuchElementException as e:
+        print(e)
         driver.get(mainPage)
         return
 
@@ -47,7 +48,8 @@ def facebook_login(driver, id, pw):
         loginID.send_keys(id)
         loginPW.send_keys(pw)
         loginPW.send_keys("\ue007")
-    except:
+    except Exception as e:
+        print(e)
         return
 
 # 네이버 로그인
@@ -62,7 +64,8 @@ def naver_login(driver, id, pw):
         loginID.send_keys(id)
         loginPW.send_keys(pw)
         loginPW.send_keys("\ue007")
-    except:
+    except Exception as e:
+        print(e)
         return
 
 
@@ -83,7 +86,8 @@ def google_login(driver, id, pw):
         loginPW = driver.find_element(By.XPATH, txtPW)
         loginPW.send_keys(pw)
         loginPW.send_keys("\ue007")
-    except:
+    except Exception as e:
+        print(e)
         return
 
 # 넥슨 로그인
@@ -98,7 +102,8 @@ def nexon_login(driver, id, pw):
         loginID.send_keys(id)
         loginPW.send_keys(pw)
         loginPW.send_keys("\ue007")
-    except:
+    except Exception as e:
+        print(e)
         return
 
 def game_start(driver):
@@ -113,11 +118,13 @@ def game_start(driver):
         btn = WebDriverWait(driver, 3).until(
             EC.presence_of_element_located((By.XPATH, '//*[@id="wrap"]/header/div/aside/div/button'))
         )
-        btn.click()
-    except ex.UnexpectedAlertPresentException:
+        btn.send_keys("\ue007")
+    except ex.UnexpectedAlertPresentException as e:
         # 너무나 빠른 입력으로 인한 AlertBox 생성시
+        print(e)
         pass
-    except:
+    except Exception as e:
         # 예상되지 않은 오류
         # 1. 로그인을 하지 않은 상태에서 Excute 사용시 무반응
+        print(e)
         return
