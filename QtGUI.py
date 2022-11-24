@@ -129,7 +129,7 @@ class Window(QMainWindow, Ui_baramWindow):
                 wd.web_login(self.driver[row], data)
             except:
                 self.driver[row] = self.make_driver()
-                self.driver[row].implicitly_wssssssait(3)
+                self.driver[row].implicitly_wait(3)
                 wd.web_login(self.driver[row], data)
                 self.status_change(row, True)
         QMessageBox.information(self, "로그인", "로그인이 완료되었습니다.")
